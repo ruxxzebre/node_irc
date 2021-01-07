@@ -57,6 +57,9 @@ function requestModel(action, ...args) {
             request.data.login = args[0];
             request.data.password = args[1];
             break;
+        case ('anonymousLogin'):
+            request.data.anonymousLogin = args[0];
+            break;
         case ('signUp'):
             request.data.login = args[0];
             request.data.password = args[1];
