@@ -1,5 +1,5 @@
-// const WebSocket = require('ws');
-// const socket = new WebSocket('ws://localhost:3001');
+const WebSocket = require('ws');
+const socket = new WebSocket('ws://localhost:3001');
 const { resolve } = require('path');
 const readline = require('readline');
 const rl = readline.createInterface({
@@ -13,6 +13,17 @@ function completer(line) {
     const hits = completions.filter((c) => c.startsWith(line));
     // Show all completions if none found
     return [hits.length ? hits : null, line];
+}
+
+function checkConnection() {
+    return new Promise(async (resolve, reject) => {
+        socket.on('error', (e) => {
+            reject([false, `${e.code} ERROR. I'm leaving...`]);
+        });
+        socket.on('open', (e) => {
+            resolve([true, `Connection works!`]);
+        });
+    });
 }
 
 function checkCompletions(line) {
@@ -77,12 +88,9 @@ function authUser() {
 }
 
 function readInputMessage() {
+    checkConnection().catch(e => !e[0] && process.exit(1));
     if (!isAuthenticated()) {
-        authUser().then((status) => {
-            if (status) {
-                readInputMessage();
-            }
-        });
+        authUser().then((status) => status && readInputMessage());
         return;
     }
     rl.question('YOU: ', (message) => {
