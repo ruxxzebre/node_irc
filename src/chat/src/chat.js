@@ -42,8 +42,12 @@ function checkCompletions(line) {
 
 function isAuthenticated() {
     const request = requestModel('isAuthenticated');
-    //send request to server
-    return true;
+    socket.send(request);
+    socket.on('message', (event) => {
+        console.log(event.data);
+    });
+    // //send request to server
+    // return true;
 }
 
 function requestModel(action, ...args) {
@@ -59,6 +63,9 @@ function requestModel(action, ...args) {
             request.data.email = args[2] && null;
             break;
         case ('isAuthenticated'):
+            break;
+        case ('message'):
+            request.data.message = args[0];
             break;
         default:
             throw new Error('Invalid action...');
@@ -88,16 +95,17 @@ function authUser() {
 }
 
 function readInputMessage() {
-    checkConnection().catch(e => !e[0] && process.exit(1));
-    if (!isAuthenticated()) {
-        authUser().then((status) => status && readInputMessage());
-        return;
-    }
-    rl.question('YOU: ', (message) => {
-        const command = completer(message);
-        if (command[0]) checkCompletions(command[1]);
-        readInputMessage();
-    });
+    checkConnection().then(() => {
+        if (!isAuthenticated()) {
+            authUser().then((status) => status && readInputMessage());
+            return;
+        }
+        rl.question('YOU: ', (message) => {
+            const command = completer(message);
+            if (command[0]) checkCompletions(command[1]);
+            readInputMessage();
+        });
+    }).catch(e => !e[0] && process.exit(1));
 }
 
 console.log('Welcome, my friend!');
