@@ -4,8 +4,8 @@
   "main": "src/main.js",
   "license": "MIT",
   "scripts": {
-    "start:server": "node src/main.js",
-    "dev:server": "NODE_ENV=development nodemon src/main.js --exec \"npm run pretest && node\"",
+    "start:app": "node src/main.js",
+    "dev:app": "NODE_ENV=development nodemon src/main.js --exec \"npm run pretest && node\"",
     "pretest": "eslint --ignore-path .gitignore .",
     "lint": "eslint"
   },

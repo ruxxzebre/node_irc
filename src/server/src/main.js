@@ -10,9 +10,10 @@ const server = new WebSocket.Server({ port });
 
 const broadcast = function (clientId, message) {
   server.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      console.log(message);
-      client.send(`[${Stores.users[clientId]}]: ${message}`);
+    if (client.readyState === WebSocket.OPEN && client.id !== clientId) {
+      // && client.id !== clientId
+      const resultMessage = `[${Stores.users[clientId]}]: ${message}`;
+      client.send(resultMessage);
     }
   });
 };
