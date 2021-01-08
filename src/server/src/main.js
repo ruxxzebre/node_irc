@@ -4,6 +4,15 @@ const server = new WebSocket.Server({ port: 3001 });
 
 const users = {};
 
+function emit(action, data) {
+    const response = { action };
+    if (data.constructor.name === 'Object') response.data = data;
+    else {
+        response.data = { message: data };
+    }
+    ws.send(response);
+}
+
 function broadcast(clientId, message) {
     server.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
