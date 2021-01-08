@@ -2,8 +2,11 @@ const WebSocket = require('ws');
 const { v4: UUID } = require('uuid');
 const Stores = require('./stores');
 const { AppDispatcher } = require('./stores');
+require('dotenv').config();
 
-const server = new WebSocket.Server({ port: 3001 });
+const { PORT: port } = process.env;
+
+const server = new WebSocket.Server({ port });
 
 const broadcast = function (clientId, message) {
   server.clients.forEach((client) => {
