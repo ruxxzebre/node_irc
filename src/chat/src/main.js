@@ -40,12 +40,13 @@ function checkCompletions(line) {
     }
 }
 
-function isAuthenticated() {
+async function isAuthenticated() {
     const request = requestModel('isAuthenticated');
     socket.send(request);
-    socket.on('message', (event) => {
-        console.log(event.data);
-    });
+    // MAKE authchecking with HTTP
+    // think what to move to HTTP protocol
+
+    // const response = await asyncCatchEvent('message');
     // //send request to server
     // return true;
 }
@@ -80,6 +81,14 @@ function asyncQuestion(prompt) {
     return new Promise((resolve) => {
         rl.question(prompt, (line) => {
             resolve(line);             
+        });
+    });
+}
+
+function asyncCatchEvent(event) {
+    return new Promise((resolve) => {
+        socket.on(event, (input) => {
+            resolve(input.data);
         });
     });
 }
