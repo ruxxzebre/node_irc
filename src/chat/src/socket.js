@@ -1,6 +1,9 @@
 const WebSocket = require('ws');
+const prompt = require('prompt');
 const { completer, checkCompletions } = require('./commands');
-const { rl } = require('./rl');
+// const { rl } = require('./rl');
+
+prompt.message = '';
 
 const runSocket = (id) => {
   const { SOCKET_URL } = process.env;
@@ -41,12 +44,14 @@ const runSocket = (id) => {
     // rl.write(`\n${data}`);
     // rl.write('', { ctrl: true, name: 'u' });
       console.log(data);
+    // console.log(`${JSON.stringify(Object.keys(data))}`);
     });
   }
 
   async function readInputMessage() {
     const question = () => {
-      rl.question('[YOU]: ', (message) => {
+      prompt.get('[YOU]', (err, result) => {
+        const message = result['[YOU]'];
         const command = completer(message);
         if (command[0]) checkCompletions(command[1]);
         socket.send(JSON.stringify({
@@ -61,6 +66,7 @@ const runSocket = (id) => {
       console.log('Trouble with socket...');
       process.exit(1);
     }
+    prompt.start();
     console.log('Yeeet! Connected!');
     question();
   }
