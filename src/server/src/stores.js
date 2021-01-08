@@ -1,22 +1,35 @@
-const MicroEvent = require('micro-event');
+// const MicroEvent = require('micro-event');
 const { Dispatcher } = require('./actions');
 
 const AppDispatcher = new Dispatcher();
 
-const Users = {
-  users: [],
+const Stores = {
+  users: {},
+  messages: [],
 };
-MicroEvent.mixin(Users);
-AppDispatcher.register('add', (payload) => Users.users.push(payload));
-AppDispatcher.register('remove', (payload) => {
-  const { username } = payload;
-  const newUsers = Users.users.filter((item) => item.username !== username);
-  Users.users = newUsers;
+// MicroEvent.mixin(Stores.users);
+
+// Users store
+AppDispatcher.register('addUser', (payload) => {
+  const { id, username } = payload;
+  Stores.users[id] = username;
 });
-// eslint-disable-next-line no-unused-vars
-AppDispatcher.register('changeName', (payload) => {
-  // here we change username
-  // payload();
+AppDispatcher.register('removeUser', (payload) => {
+  const { id } = payload;
+  const newUsers = Object.keys(Stores.users).filter((userID) => id !== userID);
+  Stores.users = newUsers;
 });
 
-// module.exports = ;
+// Messages store
+AppDispatcher.register('message', (payload) => {
+  const { id, message } = payload;
+  Stores.messages.push({ id, message });
+});
+
+module.exports = Stores;
+module.exports.AppDispatcher = AppDispatcher;
+// eslint-disable-next-line no-unused-vars
+// AppDispatcher.register('changeUsername', (payload) => {
+// here we change username
+// payload();
+// });

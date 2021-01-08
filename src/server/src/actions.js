@@ -7,8 +7,8 @@ class Dispatcher extends EventEmitter {
   }
 
   dispatch(data) {
-    const { actionName, item } = data;
-    this.emit(actionName, item);
+    const { actionName, body } = data;
+    this.emit(actionName, body);
   }
 
   register(actionName, fn) {
@@ -24,4 +24,4 @@ class Dispatcher extends EventEmitter {
   }
 }
 
-module.exports = { Dispatcher };
+module.exports.Dispatcher = Dispatcher;
