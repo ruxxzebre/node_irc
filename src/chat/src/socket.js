@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 const { completer, checkCompletions } = require('./commands');
 const { rl } = require('./rl');
 
-const runSocket = () => {
+const runSocket = (id) => {
   const { SOCKET_URL } = process.env;
   const socket = new WebSocket(SOCKET_URL);
 
@@ -15,18 +15,23 @@ const runSocket = () => {
     });
   }
 
+  socket.on('open', () => {
+    socket.send(JSON.stringify({
+      actionName: 'recordID',
+      body: {
+        id,
+      },
+    }));
+  });
+
   function checkConnection() {
-    return true;
+    return [true, 'chill'];
     //   if (connected) return Promise.resolve([true, 'Connection works!']);
     //   return new Promise((resolve) => {
     //     socket.on('error', (e) => {
     //       connected = false;
     //       // eslint-disable-next-line prefer-promise-reject-errors
     //       resolve([false, `${e.code} ERROR. I'm leaving...`]);
-    //     });
-    //     socket.on('open', () => {
-    //       connected = true;
-    //       resolve([true, 'Connection works!']);
     //     });
     //   });
   }
@@ -52,7 +57,10 @@ const runSocket = () => {
       });
     };
     const connectionStatus = await checkConnection();
-    if (!connectionStatus[0]) process.exit(1);
+    if (!connectionStatus[0]) {
+      console.log('Trouble with socket...');
+      process.exit(1);
+    }
     console.log('Yeeet! Connected!');
     question();
   }

@@ -17,7 +17,7 @@ function authUser() {
           console.log('Connection failed...');
           process.exit(1);
         }
-        if (response.data === 'OK') resolve(true);
+        if (response.data) resolve(response.data);
         else resolve(false);
       }
     });

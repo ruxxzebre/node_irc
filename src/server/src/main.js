@@ -10,7 +10,6 @@ const { PORT: port } = process.env;
 
 const app = express();
 const server = new WebSocket.Server({ port });
-const userID = UUID();
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -24,6 +23,7 @@ app.use(cors({
 app.get('/authenticate', (req, res) => {
   // eslint-disable-next-line no-prototype-builtins
   if (req.query.hasOwnProperty('username')) {
+    const userID = UUID();
     AppDispatcher.dispatch({
       actionName: 'addUser',
       body: {
@@ -31,7 +31,7 @@ app.get('/authenticate', (req, res) => {
         username: req.query.username,
       },
     });
-    res.sendStatus(200);
+    res.send(userID);
   } else {
     res.sendStatus(401);
   }
@@ -73,13 +73,18 @@ broadcast.bind({ server });
 server.on('connection', (ws) => {
   // TODO: input validation
   // TODO: validate manipulations with users store
-  // eslint-disable-next-line no-param-reassign
-  ws.id = userID;
   ws.on('message', (json) => {
+    console.log(json);
     const data = JSON.parse(json);
-    data.body.id = ws.id;
-    AppDispatcher.dispatch(data);
-    if (data.actionName === 'addUser') broadcast(ws.id, `${data.body.username} CONNECTED...`);
-    else if (data.actionName === 'message') broadcast(ws.id, data.body.message);
+    if (data.actionName === 'recordID') {
+      // eslint-disable-next-line no-param-reassign
+      ws.id = data.body.id;
+    } else {
+      data.body.id = ws.id;
+      AppDispatcher.dispatch(data);
+      // if (data.actionName === 'addUser') broadcast(ws.id, `${data.body.username} CONNECTED...`);
+      if (data.actionName === 'recordID') broadcast(ws.id, `${data.body.username} CONNECTED...`);
+      else if (data.actionName === 'message') broadcast(ws.id, data.body.message);
+    }
   });
 });

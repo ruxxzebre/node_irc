@@ -4,8 +4,8 @@ const { authUser } = require('./api');
 const runSocket = require('./socket');
 
 authUser()
-  .then((isAuthed) => {
-    if (isAuthed) runSocket();
+  .then((id) => {
+    if (id) runSocket(id);
   });
 // let connected = false;
 
