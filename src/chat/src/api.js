@@ -1,5 +1,6 @@
 const axios = require('axios');
-const { rl, asyncQuestion } = require('./rl');
+const rl = require('./rl');
+const { asyncQuestion } = require('./rl');
 
 const { API_URL } = process.env;
 
@@ -12,6 +13,7 @@ function authUser() {
         let response;
         const url = `${API_URL}/authenticate?username=${login}`;
         try {
+          // strange bug, just eternal waiting, no errors, nothing
           response = await axios.get(url);
         } catch {
           console.log('Connection failed...');

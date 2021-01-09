@@ -3,6 +3,7 @@ require('dotenv').config();
 const { authUser } = require('./api');
 const runSocket = require('./socket');
 
+console.log('Welcome, my friend!');
 authUser()
   .then((id) => {
     if (id) runSocket(id);
