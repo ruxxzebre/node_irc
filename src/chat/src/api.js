@@ -2,7 +2,7 @@ const axios = require('axios');
 const rl = require('./rl');
 const { asyncQuestion } = require('./rl');
 
-const { API_URL } = process.env;
+const { API_URL, API_PORT } = process.env;
 
 function authUser() {
   return new Promise((resolve) => {
@@ -11,7 +11,7 @@ function authUser() {
         const login = await asyncQuestion('Login: ');
         // const password = await asyncQuestion('Password: ');
         let response;
-        const url = `${API_URL}/authenticate?username=${login}`;
+        const url = `${API_URL}:${API_PORT}/authenticate?username=${login}`;
         try {
           // TODO: fix strange bug, just eternal waiting, no errors, nothing
           response = await axios.get(url);

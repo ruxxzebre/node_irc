@@ -5,8 +5,8 @@ const { readInputMessage } = require('./rl');
 prompt.message = '';
 
 const runSocket = (id) => {
-  const { SOCKET_URL } = process.env;
-  const socket = new WebSocket(SOCKET_URL);
+  const { SOCKET_URL, SOCKET_PORT } = process.env;
+  const socket = new WebSocket(`${SOCKET_URL}:${SOCKET_PORT}`);
 
   socket.on('open', () => {
     console.log('Yeeet! Connected!');
