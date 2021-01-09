@@ -13,7 +13,7 @@ function authUser() {
         let response;
         const url = `${API_URL}/authenticate?username=${login}`;
         try {
-          // strange bug, just eternal waiting, no errors, nothing
+          // TODO: fix strange bug, just eternal waiting, no errors, nothing
           response = await axios.get(url);
         } catch {
           console.log('Connection failed...');
