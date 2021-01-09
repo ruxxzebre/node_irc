@@ -1,35 +1,29 @@
-// const MicroEvent = require('micro-event');
-const { Dispatcher } = require('./actions');
-
-const AppDispatcher = new Dispatcher();
+const EventMixin = require('./eventMixin');
+const { broadcast } = require('./socket');
 
 const Stores = {
   users: {},
   messages: [],
 };
-// MicroEvent.mixin(Stores.users);
 
-// Users store
-AppDispatcher.register('addUser', (payload) => {
-  const { id, username } = payload;
-  Stores.users[id] = username;
-});
-AppDispatcher.register('removeUser', (payload) => {
-  const { id } = payload;
-  const newUsers = Object.keys(Stores.users).filter((userID) => id !== userID);
-  Stores.users = newUsers;
-});
+EventMixin(Stores.users);
+EventMixin(Stores.messages);
 
-// Messages store
-AppDispatcher.register('message', (payload) => {
+Stores.users.on('userAdded', (payload) => {
   const { id, message } = payload;
-  Stores.messages.push({ id, message });
+  broadcast(id, message);
 });
+
+Stores.messages.on('message', (payload) => {
+  const { id, message } = payload;
+  broadcast(id, message);
+});
+
+// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line arrow-body-style
+const findUser = (userCredential, id = false) => {
+  return Stores.users.find((user) => userCredential === (id ? user.id : user.username));
+};
 
 module.exports = Stores;
-module.exports.AppDispatcher = AppDispatcher;
-// eslint-disable-next-line no-unused-vars
-// AppDispatcher.register('changeUsername', (payload) => {
-// here we change username
-// payload();
-// });
+module.exports.storeHelpers = findUser;
