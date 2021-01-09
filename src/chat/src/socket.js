@@ -9,15 +9,6 @@ const runSocket = (id) => {
   const { SOCKET_URL } = process.env;
   const socket = new WebSocket(SOCKET_URL);
 
-  // eslint-disable-next-line no-unused-vars
-  function connectSocket() {
-    return new Promise((resolve) => {
-      socket.onopen(() => {
-        resolve(true);
-      });
-    });
-  }
-
   socket.on('open', () => {
     socket.send(JSON.stringify({
       actionName: 'recordID',
@@ -41,10 +32,10 @@ const runSocket = (id) => {
 
   function acceptMessage() {
     socket.on('message', (data) => {
-    // rl.write(`\n${data}`);
-    // rl.write('', { ctrl: true, name: 'u' });
+      // rl.write(`\n${data}`);
+      // rl.write('', { ctrl: true, name: 'u' });
       console.log(data);
-    // console.log(`${JSON.stringify(Object.keys(data))}`);
+      // console.log(`${JSON.stringify(Object.keys(data))}`);
     });
   }
 
