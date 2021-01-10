@@ -52,8 +52,6 @@ Stores.users.on('userAdded', (payload) => {
 });
 
 Stores.messages.on('message', (payload) => {
-  console.log(payload);
-  console.log(Stores.users);
   const { id, message } = payload;
   AppDispatcher.dispatch({
     actionName: 'broadcast',

@@ -1,5 +1,7 @@
 node_modules
-*.eslintrc.js
+.eslintrc*
 package.json
 package-lock.json
 yarn.lock
+jest.config.js
+**/src/__tests__

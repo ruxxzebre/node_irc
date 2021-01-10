@@ -19,6 +19,7 @@ const broadcast = (clientId, message) => {
 AppDispatcher.register('broadcast', ({ clientId, message }) => broadcast(clientId, message));
 
 server.on('connection', (ws) => {
+  ws.send('Connected!');
   // TODO: FIX MESS WITH CIRCULAR DEPS
   // TODO: input validation
   // TODO: validate manipulations with users store
