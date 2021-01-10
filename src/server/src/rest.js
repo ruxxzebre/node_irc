@@ -16,6 +16,7 @@ app.use(cors({
   // allowedHeaders: ['"Content-Type", "Authorization"'],
   allowedHeaders: ['*'],
 }));
+// Stores.users.log();
 
 app.get('/authenticate', (req, res) => {
   // eslint-disable-next-line no-prototype-builtins

@@ -31,6 +31,7 @@ function validate(object, schema) {
 }
 
 function RequestObject(actionName, body, stringify = false) {
+  // Fetch schemas from server, maybe create init script
   console.log(body);
   const schema = schemas[actionName];
   if (!schema) throw new Error('Invalid action.');

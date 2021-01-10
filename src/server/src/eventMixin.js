@@ -1,3 +1,5 @@
+const { extendObject } = require('./helpers');
+
 const mixins = {
   on(actionName, handler) {
     if (!this.eventHandlers) this.eventHandlers = {};
@@ -18,13 +20,12 @@ const mixins = {
     if (!this.eventHandlers || !this.eventHandlers[actionName]) {
       return;
     }
-
-    this.eventHandlers[actionName].forEach((handler) => handler.apply(this, body));
+    this.eventHandlers[actionName].forEach((handler) => handler.apply(this, [body]));
   },
 };
 
-const EventMixin = (object) => {
-  Object.assign(object, mixins);
+const EventMixin = (object, proto = false) => {
+  extendObject(object, mixins, proto);
 };
 
 module.exports = EventMixin;
