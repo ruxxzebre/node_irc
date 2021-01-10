@@ -12,6 +12,7 @@ beforeAll(async () => {
   // auth
   const { body: id } = await got(url);
   // socket
+  require('../socket');
   socket = new WebSocket(`${SOCKET_URL}:${SOCKET_PORT}`);
   // assigning id to socket connection
   socket.send({ actionName: 'recordID', body: { id } });

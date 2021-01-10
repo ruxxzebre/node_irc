@@ -25,12 +25,13 @@ server.on('connection', (ws) => {
   // TODO: if no id passed or it's not found in store ->
   // close connection and throw a description message
   // TODO: add some kind of `permission system` for users
-  // ws.addEventListener('');
   ws.on('message', (json) => {
     const data = JSON.parse(json);
     if (data.actionName === 'recordID') {
       // eslint-disable-next-line no-param-reassign
       ws.id = data.body.id;
+    } else if (data.actionName === 'getUserID') {
+      ws.send(ws.id);
     } else {
       data.body.id = ws.id;
       AppDispatcher.dispatch(data);

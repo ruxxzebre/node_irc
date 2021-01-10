@@ -6,8 +6,6 @@ const AppDispatcher = new Dispatcher();
 
 // Users store
 AppDispatcher.register('addUser', Actions.addUser);
-AppDispatcher.register('removeUser', Actions.removeUser);
-AppDispatcher.register('changeUsername', Actions.changeUsername);
 
 // Messages store
 AppDispatcher.register('message', Actions.message);

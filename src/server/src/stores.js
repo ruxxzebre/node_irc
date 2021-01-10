@@ -16,7 +16,6 @@ EventMixin(Stores.messages);
 
 const Actions = {
   addUser: (payload) => {
-    console.log(Stores);
     const { id, username } = payload;
     Stores.users[id] = username;
     const userAdded = {
@@ -30,17 +29,8 @@ const Actions = {
     Stores.messages.push({ id, message });
     Stores.messages.trigger({ actionName: 'message', body: payload });
   },
-  removeUser: (payload) => {
-    // TODO: implement user removal
-    console.log(payload);
-    // const { id } = payload;
-    // const newUsers = Object.keys(Stores.users).filter((userID) => id !== userID);
-    // Stores.users = newUsers;
-  },
-  changeUsername: (payload) => {
-    // TODO: implement username changing
-    console.log(payload);
-  },
+  // TODO: implement user removal
+  // TODO: implement username changing
 };
 
 Stores.users.on('userAdded', (payload) => {
@@ -61,8 +51,6 @@ Stores.messages.on('message', (payload) => {
 
 // Users store
 AppDispatcher.register('addUser', Actions.addUser);
-AppDispatcher.register('removeUser', Actions.removeUser);
-AppDispatcher.register('changeUsername', Actions.changeUsername);
 
 // Messages store
 AppDispatcher.register('message', Actions.message);
