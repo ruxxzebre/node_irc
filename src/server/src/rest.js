@@ -46,5 +46,5 @@ app.get('/isauthed', (req, res) => {
 });
 
 app.listen(API_PORT, () => {
-  console.log(`Listeting on ${API_PORT}`);
+  console.log(`Listening on ${API_PORT}`);
 });

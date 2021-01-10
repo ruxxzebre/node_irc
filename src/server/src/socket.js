@@ -20,12 +20,12 @@ AppDispatcher.register('broadcast', ({ clientId, message }) => broadcast(clientI
 
 server.on('connection', (ws) => {
   ws.send('Connected!');
-  // TODO: FIX MESS WITH CIRCULAR DEPS
   // TODO: input validation
   // TODO: validate manipulations with users store
-  // TODO: if no id passed,
-  // or it's not found in store -> close connection and throw a description message
+  // TODO: if no id passed or it's not found in store ->
+  // close connection and throw a description message
   // TODO: add some kind of `permission system` for users
+  // ws.addEventListener('');
   ws.on('message', (json) => {
     const data = JSON.parse(json);
     if (data.actionName === 'recordID') {
